@@ -17,8 +17,8 @@ class MyApp extends StatelessWidget {
               Center(
                 child: Image(
                     image: const AssetImage('assets/1.png'),
-                    width: MediaQuery.of(context).size.width * 0.80,
-                    height: MediaQuery.of(context).size.height * 0.70,
+                    width: MediaQuery.of(context).size.width * 0.90,
+                    height: MediaQuery.of(context).size.height * 0.65,
                     fit: BoxFit.fitHeight),
               ),
               Container(
@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
                     ),
                     color: Color.fromRGBO(236, 233, 218, 1),
                   ),
-                  height: MediaQuery.of(context).size.height * 0.30,
+                  height: MediaQuery.of(context).size.height * 0.35,
                   child: Container(
                       child: Padding(
                           padding: EdgeInsets.all(10),
@@ -51,7 +51,7 @@ class MyApp extends StatelessWidget {
                                                 MediaQuery.of(context)
                                                     .size
                                                     .width) *
-                                            0.019,
+                                            0.018,
                                         fontStyle: FontStyle.normal,
                                         fontWeight: FontWeight.bold)),
                                 Center(
@@ -65,9 +65,43 @@ class MyApp extends StatelessWidget {
                                                     MediaQuery.of(context)
                                                         .size
                                                         .width) *
-                                                0.017,
+                                                0.016,
                                             fontStyle: FontStyle.normal,
-                                            fontWeight: FontWeight.normal)))
+                                            fontWeight: FontWeight.normal))),
+                                Padding(
+                                  padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
+                                  child: Container(
+                                    child: Image(
+                                        image:
+                                            const AssetImage('assets/l1.png'),
+                                        fit: BoxFit.fitHeight,
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.40),
+                                  ),
+                                ),
+                                TextButton(
+                                    style: TextButton.styleFrom(
+                                      backgroundColor: Colors.yellow,
+                                    ),
+                                    onPressed: () {},
+                                    child: Padding(
+                                      padding: EdgeInsets.all(10),
+                                      child: Text(
+                                        'Næste',
+                                        style: GoogleFonts.outfit(
+                                          fontSize: (MediaQuery.of(context)
+                                                      .size
+                                                      .height +
+                                                  MediaQuery.of(context)
+                                                      .size
+                                                      .width) *
+                                              0.018,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ))
                               ],
                             ),
                           ))))
