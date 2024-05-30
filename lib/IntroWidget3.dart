@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'IntroWidget4.dart';
 import 'IntroHolder.dart';
+import 'MainWidget.dart';
 
 class IntroWidget3 extends StatelessWidget {
   const IntroWidget3({super.key});
@@ -93,8 +94,8 @@ class IntroWidget3 extends StatelessWidget {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) => Introholder(
-                                                child: IntroWidget4())));
+                                            builder: (context) =>
+                                                MainWidget()));
                                   },
                                   child: Padding(
                                     padding: EdgeInsets.all(10),

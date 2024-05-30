@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'MainWidget.dart';
 
 class IntroWidget4 extends StatelessWidget {
   const IntroWidget4({super.key});
@@ -54,7 +55,7 @@ class IntroWidget4 extends StatelessWidget {
                               Center(
                                   child: Text(
                                       textAlign: TextAlign.center,
-                                      "appen er ikke klar endnu, du tilføjer din markedsplads fra hjemmesiden",
+                                      "appen er ikke klar endnu,",
                                       style: GoogleFonts.outfit(
                                           fontSize: (MediaQuery.of(context)
                                                       .size
@@ -76,12 +77,18 @@ class IntroWidget4 extends StatelessWidget {
                                         style: TextButton.styleFrom(
                                           backgroundColor: Colors.yellow,
                                         ),
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      IntroWidget4()));
+                                        },
                                         child: Padding(
                                           padding: EdgeInsets.fromLTRB(
                                               10, 10, 10, 10),
                                           child: Text(
-                                            "tilføje marked",
+                                            "check app",
                                             style: GoogleFonts.outfit(
                                               fontSize: (MediaQuery.of(context)
                                                           .size

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 class Introholder extends StatelessWidget {
   final Widget child;
-
   Introholder({required this.child});
 
   @override
