@@ -50,9 +50,9 @@ class IntroWidget1 extends StatelessWidget {
                                                   MediaQuery.of(context)
                                                       .size
                                                       .width) *
-                                              0.018,
+                                              0.019,
                                       fontStyle: FontStyle.normal,
-                                      fontWeight: FontWeight.bold)),
+                                      fontWeight: FontWeight.w900)),
                               Center(
                                   child: Text(
                                       textAlign: TextAlign.center,
@@ -64,7 +64,7 @@ class IntroWidget1 extends StatelessWidget {
                                                   MediaQuery.of(context)
                                                       .size
                                                       .width) *
-                                              0.016,
+                                              0.014,
                                           fontStyle: FontStyle.normal,
                                           fontWeight: FontWeight.normal))),
                               Padding(

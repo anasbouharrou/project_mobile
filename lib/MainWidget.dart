@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'RoundedButton.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'MainCard.dart';
+import 'GardenCardWidget.dart';
 
 class MainWidget extends StatelessWidget {
   @override
@@ -88,7 +89,116 @@ class MainWidget extends StatelessWidget {
                     ],
                   ),
                 ),
-              )
+              ),
+              Container(
+                  height: MediaQuery.of(context).size.height * 0.50 + 50,
+                  child: ListView(
+                    shrinkWrap: true,
+                    children: [
+                      Container(
+                          child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            margin: EdgeInsets.fromLTRB(12, 0, 0, 0),
+                            child: Text(
+                              "Markeder",
+                              style: GoogleFonts.outfit(
+                                  fontSize: (MediaQuery.of(context)
+                                              .size
+                                              .height +
+                                          MediaQuery.of(context).size.width) *
+                                      0.018,
+                                  fontStyle: FontStyle.normal,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.symmetric(vertical: 10),
+                            height:
+                                MediaQuery.of(context).size.height * 0.18 + 70,
+                            child: ListView(
+                              // This next line does the trick.
+                              scrollDirection: Axis.horizontal,
+                              children: <Widget>[
+                                GardenCardWidget(
+                                  title: 'Holmebiksen',
+                                  distance: '1,5 km',
+                                  imagePath: 'assets/m1.jpeg',
+                                ),
+                                GardenCardWidget(
+                                  title: 'Søegaards Frut',
+                                  distance: '2,8 km',
+                                  imagePath: 'assets/m2.jpeg',
+                                ),
+                                GardenCardWidget(
+                                  title: 'Holmebiksen Frut',
+                                  distance: '4 km',
+                                  imagePath: 'assets/m3.jpg',
+                                ),
+                                GardenCardWidget(
+                                  title: 'Holmebiksen',
+                                  distance: '1,5 km',
+                                  imagePath: 'assets/m1.jpeg',
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      )),
+                      Container(
+                          child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            margin: EdgeInsets.fromLTRB(12, 0, 0, 0),
+                            child: Text(
+                              "Frugt",
+                              style: GoogleFonts.outfit(
+                                  fontSize: (MediaQuery.of(context)
+                                              .size
+                                              .height +
+                                          MediaQuery.of(context).size.width) *
+                                      0.018,
+                                  fontStyle: FontStyle.normal,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.symmetric(vertical: 10),
+                            height:
+                                MediaQuery.of(context).size.height * 0.18 + 70,
+                            child: ListView(
+                              // This next line does the trick.
+                              scrollDirection: Axis.horizontal,
+                              children: <Widget>[
+                                GardenCardWidget(
+                                  title: 'Andersens Baghave',
+                                  distance: '1,9 km',
+                                  imagePath: 'assets/m4.jpeg',
+                                ),
+                                GardenCardWidget(
+                                  title: 'Hos Roberts',
+                                  distance: '1,5 km',
+                                  imagePath: 'assets/m5.jpg',
+                                ),
+                                GardenCardWidget(
+                                  title: 'Holmebiksen Roberts',
+                                  distance: '1,5 km',
+                                  imagePath: 'assets/m6.jpg',
+                                ),
+                                GardenCardWidget(
+                                  title: 'Holmebiksen',
+                                  distance: '1,5 km',
+                                  imagePath: 'assets/m1.jpeg',
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ))
+                    ],
+                  )),
             ],
           )),
         )),
