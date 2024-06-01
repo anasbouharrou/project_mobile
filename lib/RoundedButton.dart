@@ -10,11 +10,11 @@ class Roundedbutton extends StatelessWidget {
       child: Icon(
         icon,
         color: Colors.black,
-        size: 30,
+        size: 25,
       ),
       style: ElevatedButton.styleFrom(
         shape: CircleBorder(),
-        padding: EdgeInsets.all(15),
+        padding: EdgeInsets.all(12),
         backgroundColor: Color.fromRGBO(236, 233, 218, 1), // <-- Button color
         foregroundColor: Color.fromRGBO(231, 228, 210, 1),
       ),

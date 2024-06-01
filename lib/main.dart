@@ -5,6 +5,8 @@ import 'IntroWidget2.dart';
 import 'IntroWidget3.dart';
 import 'IntroWidget4.dart';
 import 'MainWidget.dart';
+import 'SignupPage.dart';
+import 'SettingsPage.dart';
 
 void main() => runApp(MyApp());
 

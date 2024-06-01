@@ -5,6 +5,7 @@ import 'MainCard.dart';
 import 'GardenCardWidget.dart';
 
 class MainWidget extends StatelessWidget {
+  int a = 0;
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
