@@ -11,6 +11,8 @@ class MainWidget extends StatefulWidget {
 
 class _MainWidgetState extends State<MainWidget> {
   String selectedCategory = "ALLE";
+  String selectedCard = "ALLE";
+
   final List<Map<String, String>> allStores = [
     {'title': 'Holmebiksen', 'distance': '1,5 km', 'imagePath': 'assets/m1.jpeg', 'category': 'ALLE'},
     {'title': 'Søegaards Frut', 'distance': '2,8 km', 'imagePath': 'assets/m2.jpeg', 'category': 'FRUGT'},
@@ -113,29 +115,38 @@ class _MainWidgetState extends State<MainWidget> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             MainCard(
-                              iconLink: "assets/i1.png",
+                              iconLink: "assets/ig1.png",
+                              selectedIconLink: "assets/ii1.png",
                               text: "ALLE",
+                              isSelected: selectedCard == "ALLE",
                               onTap: () {
                                 setState(() {
                                   selectedCategory = "ALLE";
+                                  selectedCard = "ALLE";
                                 });
                               },
                             ),
                             MainCard(
-                              iconLink: "assets/i2.png",
+                              iconLink: "assets/ig2.png",
+                              selectedIconLink: "assets/ii2.png",
                               text: "FRUGT",
+                              isSelected: selectedCard == "FRUGT",
                               onTap: () {
                                 setState(() {
                                   selectedCategory = "FRUGT";
+                                  selectedCard = "FRUGT";
                                 });
                               },
                             ),
                             MainCard(
-                              iconLink: "assets/i3.png",
+                              iconLink: "assets/ig3.png",
+                              selectedIconLink: "assets/ii3.png",
                               text: "GRUNT",
+                              isSelected: selectedCard == "GRUNT",
                               onTap: () {
                                 setState(() {
                                   selectedCategory = "GRUNT";
+                                  selectedCard = "GRUNT";
                                 });
                               },
                             ),
@@ -177,6 +188,7 @@ class _MainWidgetState extends State<MainWidget> {
                                     title: store['title']!,
                                     distance: store['distance']!,
                                     imagePath: store['imagePath']!,
+                                 
                                   )).toList(),
                                 ),
                               ),

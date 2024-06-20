@@ -3,10 +3,18 @@ import 'package:google_fonts/google_fonts.dart';
 
 class MainCard extends StatelessWidget {
   final String iconLink;
+  final String selectedIconLink;
   final String text;
   final VoidCallback onTap;
+  final bool isSelected;
 
-  MainCard({required this.iconLink, required this.text, required this.onTap});
+  MainCard({
+    required this.iconLink,
+    required this.selectedIconLink,
+    required this.text,
+    required this.onTap,
+    required this.isSelected,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +24,7 @@ class MainCard extends StatelessWidget {
         width: MediaQuery.of(context).size.width * 0.25,
         height: 40 + MediaQuery.of(context).size.height * 0.12,
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: isSelected ? Colors.yellow : Colors.white,
           borderRadius: BorderRadius.circular(5),
           boxShadow: [
             BoxShadow(color: Colors.black, spreadRadius: 0.5, blurRadius: 5),
@@ -29,7 +37,7 @@ class MainCard extends StatelessWidget {
             Container(
               width: MediaQuery.of(context).size.width * 0.12,
               child: Image(
-                image: AssetImage(iconLink),
+                image: AssetImage(isSelected ? selectedIconLink : iconLink),
                 fit: BoxFit.fitHeight,
                 width: MediaQuery.of(context).size.width * 0.40,
               ),
