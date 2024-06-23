@@ -131,7 +131,7 @@ class _MainWidgetState extends State<MainWidget> {
                                       focusColor: Colors.white,
                                       hintText: "Søg efter markedpladser",
                                       hintStyle: GoogleFonts.outfit(
-                                        fontSize: (MediaQuery.of(context).size.height + MediaQuery.of(context).size.width) * 0.005 + 10,
+                                        fontSize: 16, // Fixed font size
                                         fontStyle: FontStyle.normal,
                                         fontWeight: FontWeight.w400,
                                       ),
@@ -214,10 +214,22 @@ class _MainWidgetState extends State<MainWidget> {
                                       child: Text(
                                         selectedCategory == "FRUGT" ? "Frugt" : "Grunt",
                                         style: GoogleFonts.outfit(
-                                          fontSize: (MediaQuery.of(context).size.height + MediaQuery.of(context).size.width) * 0.018,
+                                          fontSize: 18, // Fixed font size for both
                                           fontStyle: FontStyle.normal,
                                           fontWeight: FontWeight.bold,
                                         ),
+                                      ),
+                                    ),
+                                    Container(
+                                      margin: const EdgeInsets.symmetric(vertical: 10),
+                                      height: MediaQuery.of(context).size.height * 0.18 + 70,
+                                      child: ListView(
+                                        scrollDirection: Axis.horizontal,
+                                        children: getFilteredStores(userPosition, selectedCategory).map((store) => GardenCardWidget(
+                                          title: store['title']!,
+                                          distance: store['distance'] ?? 'Calculating...',
+                                          imagePath: store['imagePath']!,
+                                        )).toList(),
                                       ),
                                     ),
                                   ],
@@ -225,12 +237,14 @@ class _MainWidgetState extends State<MainWidget> {
                                     Text(
                                       "Frugt",
                                       style: GoogleFonts.outfit(
-                                        fontSize: (MediaQuery.of(context).size.height + MediaQuery.of(context).size.width) * 0.015,
+                                        fontSize: 18, // Fixed font size for both
                                         fontStyle: FontStyle.normal,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
-                                    Container(
+                                   
+
+ Container(
                                       margin: const EdgeInsets.symmetric(vertical: 10),
                                       height: MediaQuery.of(context).size.height * 0.18 + 70,
                                       child: ListView(
@@ -245,7 +259,7 @@ class _MainWidgetState extends State<MainWidget> {
                                     Text(
                                       "Grunt",
                                       style: GoogleFonts.outfit(
-                                        fontSize: (MediaQuery.of(context).size.height + MediaQuery.of(context).size.width) * 0.015,
+                                        fontSize: 18, // Fixed font size for both
                                         fontStyle: FontStyle.normal,
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -256,19 +270,6 @@ class _MainWidgetState extends State<MainWidget> {
                                       child: ListView(
                                         scrollDirection: Axis.horizontal,
                                         children: getCategoryStores(userPosition, 'GRUNT').map((store) => GardenCardWidget(
-                                          title: store['title']!,
-                                          distance: store['distance'] ?? 'Calculating...',
-                                          imagePath: store['imagePath']!,
-                                        )).toList(),
-                                      ),
-                                    ),
-                                  ] else ...[
-                                    Container(
-                                      margin: const EdgeInsets.symmetric(vertical: 10),
-                                      height: MediaQuery.of(context).size.height * 0.18 + 70,
-                                      child: ListView(
-                                        scrollDirection: Axis.horizontal,
-                                        children: getFilteredStores(userPosition, selectedCategory).map((store) => GardenCardWidget(
                                           title: store['title']!,
                                           distance: store['distance'] ?? 'Calculating...',
                                           imagePath: store['imagePath']!,
@@ -294,3 +295,4 @@ class _MainWidgetState extends State<MainWidget> {
     );
   }
 }
+
