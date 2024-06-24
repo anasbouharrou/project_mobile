@@ -37,10 +37,21 @@ class GardenCardWidget extends StatelessWidget {
             borderRadius: const BorderRadius.vertical(
               top: Radius.circular(10),
             ),
-            child: Image.asset(
+            child: Image.network(
               imagePath,
               height: 120,
               fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) {
+                return Icon(Icons.error);
+              },
+              loadingBuilder: (context, child, loadingProgress) {
+                if (loadingProgress == null) {
+                  return child;
+                }
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              },
             ),
           ),
           Expanded(
