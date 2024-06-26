@@ -16,13 +16,22 @@ class _MainWidgetState extends State<MainWidget> {
   String selectedCard = "ALLE";
   Future<Position>? _userPositionFuture;
   List<Map<String, dynamic>> allStores = [];
+  List<Map<String, dynamic>> filteredStores = [];
   bool _isLoadingStores = true;
+  TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     _userPositionFuture = _getUserLocation();
     _fetchStoresFromFirestore();
+    _searchController.addListener(_filterStores);
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
   }
 
   Future<void> _fetchStoresFromFirestore() async {
@@ -36,6 +45,7 @@ class _MainWidgetState extends State<MainWidget> {
           'imagePath': doc['imagePath'],
           'category': doc['category']
         }).toList();
+        filteredStores = allStores;
         _isLoadingStores = false;
       });
     } catch (e) {
@@ -68,12 +78,21 @@ class _MainWidgetState extends State<MainWidget> {
     return Geolocator.distanceBetween(startLatitude, startLongitude, endLatitude, endLongitude) / 1000;
   }
 
+  void _filterStores() {
+    final query = _searchController.text.toLowerCase();
+    setState(() {
+      filteredStores = allStores.where((store) {
+        return store['title'].toLowerCase().contains(query);
+      }).toList();
+    });
+  }
+
   List<Map<String, dynamic>> getFilteredStores(Position userPosition, String category) {
     List<Map<String, dynamic>> stores;
     if (category == "ALLE") {
-      stores = allStores.where((store) => store['category'] != 'ALLE').toList();
+      stores = filteredStores.where((store) => store['category'] != 'ALLE').toList();
     } else {
-      stores = allStores.where((store) => store['category'] == category).toList();
+      stores = filteredStores.where((store) => store['category'] == category).toList();
     }
 
     for (var store in stores) {
@@ -83,7 +102,7 @@ class _MainWidgetState extends State<MainWidget> {
   }
 
   List<Map<String, dynamic>> getCategoryStores(Position userPosition, String category) {
-    List<Map<String, dynamic>> stores = allStores.where((store) => store['category'] == category).toList();
+    List<Map<String, dynamic>> stores = filteredStores.where((store) => store['category'] == category).toList();
 
     for (var store in stores) {
       store['distance'] = calculateDistance(userPosition.latitude, userPosition.longitude, store['latitude'], store['longitude']).toStringAsFixed(1) + ' km';
@@ -141,6 +160,7 @@ class _MainWidgetState extends State<MainWidget> {
                                   child: Material(
                                     borderRadius: BorderRadius.circular(15),
                                     child: TextField(
+                                      controller: _searchController,
                                       cursorColor: Colors.black,
                                       decoration: InputDecoration(
                                         iconColor: Colors.black,
