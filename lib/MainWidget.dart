@@ -36,43 +36,45 @@ class _MainWidgetState extends State<MainWidget> {
     super.dispose();
   }
 
-  Future<void> _fetchStoresFromFirestore() async {
-    try {
-      QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('stores').get();
-      setState(() {
-        allStores = snapshot.docs.map((doc) {
-          final data = doc.data() as Map<String, dynamic>;
+Future<void> _fetchStoresFromFirestore() async {
+  try {
+    QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('stores').get();
+    setState(() {
+      allStores = snapshot.docs.map((doc) {
+        final data = doc.data() as Map<String, dynamic>;
 
-          // Assuming openingHours is a List of Maps
-          final openingHoursList = data['openingHours'] as List<dynamic>? ?? [];
-          final openingHours = <String, List<String>>{};
-          for (var entry in openingHoursList) {
-            final mapEntry = entry as Map<String, dynamic>;
-            mapEntry.forEach((key, value) {
-              openingHours[key] = List<String>.from(value as List<dynamic>);
-            });
-          }
+        // Assuming openingHours is a List of Maps
+        final openingHoursList = data['openingHours'] as List<dynamic>? ?? [];
+        final openingHours = <String, List<String>>{};
+        for (var entry in openingHoursList) {
+          final mapEntry = entry as Map<String, dynamic>;
+          mapEntry.forEach((key, value) {
+            openingHours[key] = List<String>.from(value as List<dynamic>);
+          });
+        }
 
-          return {
-            'title': data['title'] ?? 'No Title',
-            'latitude': data['latitude'] ?? 0.0,
-            'longitude': data['longitude'] ?? 0.0,
-            'images': List<String>.from(data['images'] ?? []),
-            'openingHours': openingHours,
-            'category': data['category'] ?? 'Uncategorized',
-            'phone': data['phone'] ?? 'No Phone Available' // Ensure phone is included
-          };
-        }).toList();
-        filteredStores = allStores;
-        _isLoadingStores = false;
-      });
-    } catch (e) {
-      print('Error fetching stores: $e');
-      setState(() {
-        _isLoadingStores = false;
-      });
-    }
+        return {
+          'title': data['title'] ?? 'No Title',
+          'latitude': data['latitude'] ?? 0.0,
+          'longitude': data['longitude'] ?? 0.0,
+          'images': List<String>.from(data['images'] ?? []),
+          'openingHours': openingHours,
+          'category': data['category'] ?? 'Uncategorized',
+          'phone': data['phone'] ?? 'No Phone Available',
+          'description': data['description'] ?? 'No Description Available' // Add description
+        };
+      }).toList();
+      filteredStores = allStores;
+      _isLoadingStores = false;
+    });
+  } catch (e) {
+    print('Error fetching stores: $e');
+    setState(() {
+      _isLoadingStores = false;
+    });
   }
+}
+
 
   Future<Position> _getUserLocation() async {
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
