@@ -61,7 +61,12 @@ Future<void> _fetchStoresFromFirestore() async {
           'openingHours': openingHours,
           'category': data['category'] ?? 'Uncategorized',
           'phone': data['phone'] ?? 'No Phone Available',
-          'description': data['description'] ?? 'No Description Available' // Add description
+          'description': data['description'] ?? 'No Description Available',
+          'products': (data['products'] as List<dynamic>? ?? []).map((product) => {
+            'name': product['name'] ?? 'No Name',
+            'price': product['price'] ?? 'No Price',
+            'image': product['image'] ?? 'https://via.placeholder.com/100'
+          }).toList() // Add products
         };
       }).toList();
       filteredStores = allStores;

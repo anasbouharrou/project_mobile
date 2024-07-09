@@ -168,12 +168,17 @@ class _StoreDetailsScreenState extends State<StoreDetailsScreen> {
                 ],
               ),
               SizedBox(height: 16),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  buildProductCard('Friske jordbær', '20 kr', 'https://via.placeholder.com/100'),
-                  buildProductCard('Agurker', '12 kr', 'https://via.placeholder.com/100'),
-                ],
+              Text(
+                'Products',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 8),
+              Wrap(
+                spacing: 16.0,
+                runSpacing: 16.0,
+                children: (store['products'] as List<dynamic>).map((product) {
+                  return buildProductCard(product['name'], product['price'], product['image']);
+                }).toList(),
               ),
               SizedBox(height: 16),
               ClipRRect(
@@ -194,7 +199,7 @@ class _StoreDetailsScreenState extends State<StoreDetailsScreen> {
     );
   }
 
-  Widget buildProductCard(String title, String price, String imageUrl) {
+  Widget buildProductCard(String name, String price, String imageUrl) {
     return Container(
       width: 150,
       child: Card(
@@ -219,7 +224,7 @@ class _StoreDetailsScreenState extends State<StoreDetailsScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    title,
+                    name,
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
