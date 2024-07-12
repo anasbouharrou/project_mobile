@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:project_mobile/HomePage.dart';
 import 'IntroWidget4.dart';
 import 'IntroHolder.dart';
 import 'MainWidget.dart';
@@ -95,7 +96,7 @@ class IntroWidget3 extends StatelessWidget {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                MainWidget()));
+                                                HomePage()));
                                   },
                                   child: Padding(
                                     padding: EdgeInsets.all(10),

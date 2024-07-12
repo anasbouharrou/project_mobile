@@ -7,6 +7,8 @@ import 'MainCard.dart';
 import 'GardenCardWidget.dart';
 import 'MapScreen.dart' as MapPage; // Use alias for MapScreen
 import 'StoreDetailsScreen.dart'; // Import the StoreDetailsScreen
+import 'HomePage.dart'; // Import HomePage for navigation
+import 'RoundedButton2.dart';
 
 class MainWidget extends StatefulWidget {
   @override
@@ -36,50 +38,48 @@ class _MainWidgetState extends State<MainWidget> {
     super.dispose();
   }
 
-Future<void> _fetchStoresFromFirestore() async {
-  try {
-    QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('stores').get();
-    setState(() {
-      allStores = snapshot.docs.map((doc) {
-        final data = doc.data() as Map<String, dynamic>;
+  Future<void> _fetchStoresFromFirestore() async {
+    try {
+      QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('stores').get();
+      setState(() {
+        allStores = snapshot.docs.map((doc) {
+          final data = doc.data() as Map<String, dynamic>;
 
-        // Assuming openingHours is a List of Maps
-        final openingHoursList = data['openingHours'] as List<dynamic>? ?? [];
-        final openingHours = <String, List<String>>{};
-        for (var entry in openingHoursList) {
-          final mapEntry = entry as Map<String, dynamic>;
-          mapEntry.forEach((key, value) {
-            openingHours[key] = List<String>.from(value as List<dynamic>);
-          });
-        }
+          // Assuming openingHours is a Map<String, List<String>>
+          final openingHours = <String, List<String>>{};
+          if (data['openingHours'] != null) {
+            (data['openingHours'] as Map<String, dynamic>).forEach((key, value) {
+              openingHours[key] = List<String>.from(value);
+            });
+          }
 
-        return {
-          'title': data['title'] ?? 'No Title',
-          'latitude': data['latitude'] ?? 0.0,
-          'longitude': data['longitude'] ?? 0.0,
-          'images': List<String>.from(data['images'] ?? []),
-          'openingHours': openingHours,
-          'category': data['category'] ?? 'Uncategorized',
-          'phone': data['phone'] ?? 'No Phone Available',
-          'description': data['description'] ?? 'No Description Available',
-          'products': (data['products'] as List<dynamic>? ?? []).map((product) => {
-            'name': product['name'] ?? 'No Name',
-            'price': product['price'] ?? 'No Price',
-            'image': product['image'] ?? 'https://via.placeholder.com/100'
-          }).toList() // Add products
-        };
-      }).toList();
-      filteredStores = allStores;
-      _isLoadingStores = false;
-    });
-  } catch (e) {
-    print('Error fetching stores: $e');
-    setState(() {
-      _isLoadingStores = false;
-    });
+          return {
+            'id': doc.id,
+            'title': data['title'] ?? 'No Title',
+            'latitude': data['latitude'] ?? 0.0,
+            'longitude': data['longitude'] ?? 0.0,
+            'images': List<String>.from(data['images'] ?? []),
+            'openingHours': openingHours,
+            'category': data['category'] ?? 'Uncategorized',
+            'phone': data['phone'] ?? 'No Phone Available',
+            'description': data['description'] ?? 'No Description Available',
+            'products': (data['products'] as List<dynamic>? ?? []).map((product) => {
+              'name': product['name'] ?? 'No Name',
+              'price': product['price'] ?? 'No Price',
+              'image': product['image'] ?? 'https://via.placeholder.com/100'
+            }).toList(),
+          };
+        }).toList();
+        filteredStores = allStores;
+        _isLoadingStores = false;
+      });
+    } catch (e) {
+      print('Error fetching stores: $e');
+      setState(() {
+        _isLoadingStores = false;
+      });
+    }
   }
-}
-
 
   Future<Position> _getUserLocation() async {
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
@@ -155,7 +155,15 @@ Future<void> _fetchStoresFromFirestore() async {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      SearchRoundedbutton(icon: Icons.settings),
+                      Roundedbutton2(
+                        icon: Icons.arrow_back_ios_sharp,
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (context) => HomePage()), // Navigate to HomePage
+                          );
+                        },
+                      ),
                       SearchRoundedbutton(icon: Icons.favorite_border),
                     ],
                   ),
