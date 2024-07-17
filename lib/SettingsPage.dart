@@ -6,7 +6,8 @@ import 'package:geolocator/geolocator.dart';
 import 'RoundedButton2.dart';
 import 'Button.dart';
 import 'HomePage.dart';
-import 'StoreDetailsPage.dart';  // Import the StoreDetailsPage
+import 'StoreDetailsPage.dart'; // Import the StoreDetailsPage
+import 'AddStorePage.dart'; // Import the AddStorePage
 
 class SettingsPage extends StatefulWidget {
   @override
@@ -81,7 +82,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 : 'Calculating...';
 
             return {
-              'id': doc.id,  // Add document ID
+              'id': doc.id, // Add document ID
               'title': data['title'] ?? 'No Title',
               'latitude': data['latitude'] ?? 0.0,
               'longitude': data['longitude'] ?? 0.0,
@@ -114,6 +115,13 @@ class _SettingsPageState extends State<SettingsPage> {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => HomePage()),
+    );
+  }
+
+  void _navigateToAddStorePage() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => AddStorePage()),
     );
   }
 
@@ -160,51 +168,76 @@ class _SettingsPageState extends State<SettingsPage> {
                       fontWeight: FontWeight.w300,
                     ),
                     textAlign: TextAlign.center,
-                  )
+                  ),
                 ],
               ),
             ),
             _isLoadingStores
                 ? Center(child: CircularProgressIndicator())
                 : userStores.isEmpty
-                    ? Container(
-                        width: MediaQuery.of(context).size.width * 0.8,
-                        decoration: BoxDecoration(
+                    ? Center(
+                        child: Container(
+                          width: MediaQuery.of(context).size.width * 0.8,
+                          decoration: BoxDecoration(
                             color: Color.fromRGBO(236, 233, 218, 1),
-                            borderRadius: BorderRadius.circular(20)),
-                        margin: EdgeInsets.all(20),
-                        child: Padding(
-                          padding: EdgeInsets.all(20),
-                          child: Column(
-                            children: [
-                              Text(
-                                "Du har intet marked",
-                                style: GoogleFonts.outfit(
-                                  fontSize: (MediaQuery.of(context).size.height +
-                                              MediaQuery.of(context).size.width) *
-                                          0.012 +
-                                      10,
-                                  fontStyle: FontStyle.normal,
-                                  fontWeight: FontWeight.w800,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          margin: EdgeInsets.all(20),
+                          child: Padding(
+                            padding: EdgeInsets.all(20),
+                            child: Column(
+                              children: [
+                                Text(
+                                  "Du har intet marked",
+                                  style: GoogleFonts.outfit(
+                                    fontSize: (MediaQuery.of(context).size.height +
+                                                MediaQuery.of(context).size.width) *
+                                            0.012 +
+                                        10,
+                                    fontStyle: FontStyle.normal,
+                                    fontWeight: FontWeight.w800,
+                                  ),
                                 ),
-                              ),
-                              Text(
-                                "Opret din egen markedsplads for kun 99kr om måneden og prøv den første måned helt gratis",
-                                style: GoogleFonts.outfit(
-                                  fontSize: (MediaQuery.of(context).size.height +
-                                              MediaQuery.of(context).size.width) *
-                                          0.0003 +
-                                      14,
-                                  fontStyle: FontStyle.normal,
-                                  fontWeight: FontWeight.w300,
+                                Text(
+                                  "Opret din egen markedsplads for kun 99kr om måneden og prøv den første måned helt gratis",
+                                  style: GoogleFonts.outfit(
+                                    fontSize: (MediaQuery.of(context).size.height +
+                                                MediaQuery.of(context).size.width) *
+                                            0.0003 +
+                                        14,
+                                    fontStyle: FontStyle.normal,
+                                    fontWeight: FontWeight.w300,
+                                  ),
+                                  textAlign: TextAlign.center,
                                 ),
-                                textAlign: TextAlign.center,
-                              ),
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                                child: Button(text: "Opret nyt marked"),
-                              ),
-                            ],
+                                Padding(
+                                  padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                                  child: ElevatedButton(
+                                    onPressed: _navigateToAddStorePage,
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.yellow,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(12.0),
+                                      child: Text(
+                                        'Opret nyt marked', // Danish text for "Add New Store"
+                                        style: GoogleFonts.outfit(
+                                          fontSize: (MediaQuery.of(context).size.height +
+                                                      MediaQuery.of(context).size.width) *
+                                                  0.008 +
+                                              8,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       )

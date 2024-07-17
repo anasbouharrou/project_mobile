@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'HomePage.dart';
 import 'Roundedbutton2.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'TextInput2.dart';
 import 'Button2.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'HomePage.dart'; // Import HomePage for navigation
+import 'LoginPage.dart'; // Import LoginPage for navigation
 
 class RegisterPage extends StatefulWidget {
   @override
@@ -34,6 +35,12 @@ class _RegisterPageState extends State<RegisterPage> {
       });
 
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Signup successful!")));
+      
+      // Redirect to LoginPage
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => LoginPage()),
+      );
     } on FirebaseAuthException catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Error: ${e.message}")));
     } catch (e) {
