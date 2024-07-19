@@ -129,165 +129,185 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color.fromRGBO(247, 246, 238, 1),
-      body: Container(
-        child: Column(
-          children: [
-            Row(
+      body: Column(
+        children: [
+          Row(
+            children: [
+              Padding(
+                padding: EdgeInsets.all(10),
+                child: Roundedbutton2(
+                  icon: Icons.logout,
+                  onPressed: _logout,
+                ),
+              ),
+            ],
+          ),
+          Center(
+            child: Column(
               children: [
-                Padding(
-                  padding: EdgeInsets.all(10),
-                  child: Roundedbutton2(
-                    icon: Icons.logout,
-                    onPressed: _logout,
+                Text(
+                  "Indstillinger",
+                  style: GoogleFonts.outfit(
+                    fontSize: (MediaQuery.of(context).size.height + MediaQuery.of(context).size.width) * 0.008 + 15,
+                    fontStyle: FontStyle.normal,
+                    fontWeight: FontWeight.w900,
                   ),
+                ),
+                Text(
+                  "Administér nuværende markeder eller åben nye markeder",
+                  style: GoogleFonts.outfit(
+                    fontSize: (MediaQuery.of(context).size.height + MediaQuery.of(context).size.width) * 0.0003 + 12,
+                    fontStyle: FontStyle.normal,
+                    fontWeight: FontWeight.w300,
+                  ),
+                  textAlign: TextAlign.center,
                 ),
               ],
             ),
-            Center(
-              child: Column(
-                children: [
-                  Text(
-                    "Indstillinger",
-                    style: GoogleFonts.outfit(
-                      fontSize: (MediaQuery.of(context).size.height +
-                                  MediaQuery.of(context).size.width) *
-                              0.008 +
-                          15,
-                      fontStyle: FontStyle.normal,
-                      fontWeight: FontWeight.w900,
-                    ),
-                  ),
-                  Text(
-                    "Administér nuværende markeder eller åben nye markeder",
-                    style: GoogleFonts.outfit(
-                      fontSize: (MediaQuery.of(context).size.height +
-                                  MediaQuery.of(context).size.width) *
-                              0.0003 +
-                          12,
-                      fontStyle: FontStyle.normal,
-                      fontWeight: FontWeight.w300,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
-            ),
-            _isLoadingStores
-                ? Center(child: CircularProgressIndicator())
-                : userStores.isEmpty
-                    ? Center(
-                        child: Container(
-                          width: MediaQuery.of(context).size.width * 0.8,
-                          decoration: BoxDecoration(
-                            color: Color.fromRGBO(236, 233, 218, 1),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          margin: EdgeInsets.all(20),
-                          child: Padding(
-                            padding: EdgeInsets.all(20),
-                            child: Column(
-                              children: [
-                                Text(
-                                  "Du har intet marked",
-                                  style: GoogleFonts.outfit(
-                                    fontSize: (MediaQuery.of(context).size.height +
-                                                MediaQuery.of(context).size.width) *
-                                            0.012 +
-                                        10,
-                                    fontStyle: FontStyle.normal,
-                                    fontWeight: FontWeight.w800,
-                                  ),
-                                ),
-                                Text(
-                                  "Opret din egen markedsplads for kun 99kr om måneden og prøv den første måned helt gratis",
-                                  style: GoogleFonts.outfit(
-                                    fontSize: (MediaQuery.of(context).size.height +
-                                                MediaQuery.of(context).size.width) *
-                                            0.0003 +
-                                        14,
-                                    fontStyle: FontStyle.normal,
-                                    fontWeight: FontWeight.w300,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                                  child: ElevatedButton(
-                                    onPressed: _navigateToAddStorePage,
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.yellow,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(20),
-                                      ),
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(12.0),
-                                      child: Text(
-                                        'Opret nyt marked', // Danish text for "Add New Store"
-                                        style: GoogleFonts.outfit(
-                                          fontSize: (MediaQuery.of(context).size.height +
-                                                      MediaQuery.of(context).size.width) *
-                                                  0.008 +
-                                              8,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
+          ),
+          _isLoadingStores
+              ? Center(child: CircularProgressIndicator())
+              : userStores.isEmpty
+                  ? Center(
+                      child: Container(
+                        width: MediaQuery.of(context).size.width * 0.8,
+                        decoration: BoxDecoration(
+                          color: Color.fromRGBO(236, 233, 218, 1),
+                          borderRadius: BorderRadius.circular(20),
                         ),
-                      )
-                    : Expanded(
-                        child: ListView.builder(
-                          itemCount: userStores.length,
-                          itemBuilder: (context, index) {
-                            final store = userStores[index];
-                            final imageUrl = store['images'].isNotEmpty ? store['images'][0] : 'https://via.placeholder.com/100';
-                            return Card(
-                              child: ListTile(
-                                leading: Image.network(
-                                  imageUrl,
-                                  width: 50,
-                                  height: 50,
-                                  fit: BoxFit.cover,
-                                  errorBuilder: (context, error, stackTrace) {
-                                    return Icon(Icons.error);  // Handle image load error
-                                  },
-                                  loadingBuilder: (context, child, loadingProgress) {
-                                    if (loadingProgress == null) return child;
-                                    return Center(
-                                      child: CircularProgressIndicator(
-                                        value: loadingProgress.expectedTotalBytes != null
-                                            ? loadingProgress.cumulativeBytesLoaded / (loadingProgress.expectedTotalBytes ?? 1)
-                                            : null,
-                                      ),
-                                    );
-                                  },
-                                ),
-                                title: Text(store['title'] ?? 'No Title'),
-                                subtitle: Text(store['distance'] ?? 'Unknown'),
-                                trailing: IconButton(
-                                  icon: Icon(Icons.edit),
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => StoreDetailsPage(store: store),
-                                      ),
-                                    );
-                                  },
+                        margin: EdgeInsets.all(20),
+                        child: Padding(
+                          padding: EdgeInsets.all(20),
+                          child: Column(
+                            children: [
+                              Text(
+                                "Du har intet marked",
+                                style: GoogleFonts.outfit(
+                                  fontSize: (MediaQuery.of(context).size.height +
+                                              MediaQuery.of(context).size.width) *
+                                          0.012 +
+                                      10,
+                                  fontStyle: FontStyle.normal,
+                                  fontWeight: FontWeight.w800,
                                 ),
                               ),
-                            );
-                          },
+                              Text(
+                                "Opret din egen markedsplads for kun 99kr om måneden og prøv den første måned helt gratis",
+                                style: GoogleFonts.outfit(
+                                  fontSize: (MediaQuery.of(context).size.height +
+                                              MediaQuery.of(context).size.width) *
+                                          0.0003 +
+                                      14,
+                                  fontStyle: FontStyle.normal,
+                                  fontWeight: FontWeight.w300,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                              Padding(
+                                padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                                child: ElevatedButton(
+                                  onPressed: _navigateToAddStorePage,
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.yellow,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(12.0),
+                                    child: Text(
+                                      'Opret nyt marked', // Danish text for "Add New Store"
+                                      style: GoogleFonts.outfit(
+                                        fontSize: (MediaQuery.of(context).size.height +
+                                                    MediaQuery.of(context).size.width) *
+                                                0.008 +
+                                            8,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-          ],
-        ),
+                    )
+                  : Expanded(
+                      child: ListView.builder(
+                        itemCount: userStores.length,
+                        itemBuilder: (context, index) {
+                          final store = userStores[index];
+                          final imageUrl = store['images'].isNotEmpty
+                              ? store['images'][0]
+                              : 'https://via.placeholder.com/100';
+                          return Card(
+                            child: ListTile(
+                              leading: Image.network(
+                                imageUrl,
+                                width: 50,
+                                height: 50,
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return Icon(Icons.error); // Handle image load error
+                                },
+                                loadingBuilder: (context, child, loadingProgress) {
+                                  if (loadingProgress == null) return child;
+                                  return Center(
+                                    child: CircularProgressIndicator(
+                                      value: loadingProgress.expectedTotalBytes != null
+                                          ? loadingProgress.cumulativeBytesLoaded / (loadingProgress.expectedTotalBytes ?? 1)
+                                          : null,
+                                    ),
+                                  );
+                                },
+                              ),
+                              title: Text(store['title'] ?? 'No Title'),
+                              subtitle: Text(store['distance'] ?? 'Unknown'),
+                              trailing: IconButton(
+                                icon: Icon(Icons.edit),
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => StoreDetailsPage(store: store),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: ElevatedButton(
+              onPressed: _navigateToAddStorePage,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.yellow,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Text(
+                  'Opret nyt marked', // Danish text for "Add New Store"
+                  style: GoogleFonts.outfit(
+                    fontSize: (MediaQuery.of(context).size.height +
+                                MediaQuery.of(context).size.width) *
+                            0.008 +
+                        8,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

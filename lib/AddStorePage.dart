@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:geocoding/geocoding.dart'; // Import the geocoding package
 import 'dart:io';
 
 import 'TextInput3.dart';
@@ -17,7 +18,7 @@ class _AddStorePageState extends State<AddStorePage> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _latitudeController = TextEditingController();
   final TextEditingController _longitudeController = TextEditingController();
-  final TextEditingController _categoryController = TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final Map<String, TextEditingController> _openingHourControllers = {
@@ -39,12 +40,15 @@ class _AddStorePageState extends State<AddStorePage> {
   String? _imageUrl;
   List<Map<String, dynamic>> _products = []; // List to store products locally
 
+  String _selectedCategory = 'FRUGT'; // Default category
+  final List<String> _categories = ['FRUGT', 'GRUNT', 'ALLE'];
+
   @override
   void dispose() {
     _titleController.dispose();
     _latitudeController.dispose();
     _longitudeController.dispose();
-    _categoryController.dispose();
+    _addressController.dispose();
     _phoneController.dispose();
     _descriptionController.dispose();
     _productNameController.dispose();
@@ -135,7 +139,7 @@ class _AddStorePageState extends State<AddStorePage> {
           'longitude': double.parse(_longitudeController.text),
           'images': _imageUrl != null ? [_imageUrl] : [],
           'openingHours': openingHours,
-          'category': _categoryController.text,
+          'category': _selectedCategory,
           'phone': _phoneController.text,
           'description': _descriptionController.text,
           'ownerId': user.uid,
@@ -161,6 +165,21 @@ class _AddStorePageState extends State<AddStorePage> {
     }
   }
 
+  Future<void> _getCoordinatesFromAddress() async {
+    try {
+      List<Location> locations = await locationFromAddress(_addressController.text);
+      if (locations.isNotEmpty) {
+        _latitudeController.text = locations.first.latitude.toString();
+        _longitudeController.text = locations.first.longitude.toString();
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('No locations found for the address')));
+      }
+    } catch (e) {
+      print('Error getting coordinates from address: $e');
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error getting coordinates from address: $e')));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -181,6 +200,28 @@ class _AddStorePageState extends State<AddStorePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TextInput3(hintText: 'Store Title', controller: _titleController),
+            TextInput3(hintText: 'Address', controller: _addressController),
+            SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: _getCoordinatesFromAddress,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Text(
+                  'Get Coordinates from Address',
+                  style: GoogleFonts.outfit(
+                    fontSize: (MediaQuery.of(context).size.height + MediaQuery.of(context).size.width) * 0.008 + 8,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
             TextInput3(hintText: 'Latitude', controller: _latitudeController),
             TextInput3(hintText: 'Longitude', controller: _longitudeController),
             SizedBox(height: 10),
@@ -198,7 +239,40 @@ class _AddStorePageState extends State<AddStorePage> {
                     : Image.file(_image!, fit: BoxFit.cover),
               ),
             ),
-            TextInput3(hintText: 'Category', controller: _categoryController),
+            SizedBox(height: 10),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+              decoration: BoxDecoration(
+                color: Colors.grey[200],
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: DropdownButton<String>(
+                value: _selectedCategory,
+                icon: Icon(Icons.arrow_downward),
+                iconSize: 24,
+                elevation: 16,
+                style: GoogleFonts.outfit(
+                  color: Colors.black,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+                underline: Container(
+                  height: 2,
+                  color: Colors.transparent,
+                ),
+                onChanged: (String? newValue) {
+                  setState(() {
+                    _selectedCategory = newValue!;
+                  });
+                },
+                items: _categories.map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+              ),
+            ),
             TextInput3(hintText: 'Phone', controller: _phoneController),
             TextInput3(hintText: 'Description', controller: _descriptionController),
             Padding(

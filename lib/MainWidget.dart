@@ -70,7 +70,7 @@ class _MainWidgetState extends State<MainWidget> {
             }).toList(),
           };
         }).toList();
-        filteredStores = allStores;
+        _filterStores();
         _isLoadingStores = false;
       });
     } catch (e) {
@@ -115,9 +115,9 @@ class _MainWidgetState extends State<MainWidget> {
   List<Map<String, dynamic>> getFilteredStores(Position userPosition, String category) {
     List<Map<String, dynamic>> stores;
     if (category == "ALLE") {
-      stores = filteredStores.where((store) => store['category'] != 'ALLE').toList();
+      stores = filteredStores;
     } else {
-      stores = filteredStores.where((store) => store['category'] == category).toList();
+      stores = filteredStores.where((store) => store['category'] == category || store['category'] == 'ALLE').toList();
     }
 
     for (var store in stores) {
@@ -127,7 +127,7 @@ class _MainWidgetState extends State<MainWidget> {
   }
 
   List<Map<String, dynamic>> getCategoryStores(Position userPosition, String category) {
-    List<Map<String, dynamic>> stores = filteredStores.where((store) => store['category'] == category).toList();
+    List<Map<String, dynamic>> stores = filteredStores.where((store) => store['category'] == category || store['category'] == 'ALLE').toList();
 
     for (var store in stores) {
       store['distance'] = calculateDistance(userPosition.latitude, userPosition.longitude, store['latitude'], store['longitude']).toStringAsFixed(1) + ' km';

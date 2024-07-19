@@ -13,7 +13,7 @@ class TextInput2 extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.fromLTRB(5, 20, 5, 20),
       child: Container(
-        margin: EdgeInsets.all(10),
+        margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
         width: MediaQuery.of(context).size.width * 0.88,
         decoration: BoxDecoration(
           boxShadow: [

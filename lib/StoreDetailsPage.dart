@@ -32,6 +32,9 @@ class _StoreDetailsPageState extends State<StoreDetailsPage> {
   List<Map<String, dynamic>> _products = [];
   List<Map<String, dynamic>> _initialProducts = [];
 
+  String _selectedCategory = 'FRUGT'; // Default category
+  final List<String> _categories = ['FRUGT', 'GRUNT', 'ALLE'];
+
   @override
   void initState() {
     super.initState();
@@ -42,7 +45,8 @@ class _StoreDetailsPageState extends State<StoreDetailsPage> {
     _appointmentController = TextEditingController(text: widget.store['appointment'] ?? '');
     _productNameController = TextEditingController();
     _productPriceController = TextEditingController();
-    
+    _selectedCategory = widget.store['category'] ?? 'FRUGT';
+
     if (widget.store['products'] != null) {
       _initialProducts = List<Map<String, dynamic>>.from(widget.store['products']);
       _products = List<Map<String, dynamic>>.from(widget.store['products']);
@@ -109,6 +113,7 @@ class _StoreDetailsPageState extends State<StoreDetailsPage> {
         'address': _addressController.text,
         'appointment': _appointmentController.text,
         'openingHours': updatedOpeningHours,
+        'category': _selectedCategory,
         'images': _storeImageUrl != null ? [_storeImageUrl!] : widget.store['images'],
         'products': _products,
       });
@@ -180,6 +185,40 @@ class _StoreDetailsPageState extends State<StoreDetailsPage> {
                         ? Image.network(widget.store['images'][0], fit: BoxFit.cover)
                         : Center(child: Text('Tap to pick store image')))
                     : Image.file(_storeImage!, fit: BoxFit.cover),
+              ),
+            ),
+            SizedBox(height: 10),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+              decoration: BoxDecoration(
+                color: Colors.grey[200],
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: DropdownButton<String>(
+                value: _selectedCategory,
+                icon: Icon(Icons.arrow_downward),
+                iconSize: 24,
+                elevation: 16,
+                style: GoogleFonts.outfit(
+                  color: Colors.black,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+                underline: Container(
+                  height: 2,
+                  color: Colors.transparent,
+                ),
+                onChanged: (String? newValue) {
+                  setState(() {
+                    _selectedCategory = newValue!;
+                  });
+                },
+                items: _categories.map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
               ),
             ),
             SizedBox(height: 10),

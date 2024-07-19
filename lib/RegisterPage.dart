@@ -1,4 +1,8 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:project_mobile/TextInput.dart';
 import 'HomePage.dart';
 import 'Roundedbutton2.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -88,7 +92,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       Text(
                         "For at oprette et marked, skal du oprette en profil",
                         style: GoogleFonts.outfit(
-                          fontSize: (MediaQuery.of(context).size.height + MediaQuery.of(context).size.width) * 0.0003 + 15,
+                          fontSize: (MediaQuery.of(context).size.height + MediaQuery.of(context).size.width) * 0.0003 + 13,
                           fontStyle: FontStyle.normal,
                           fontWeight: FontWeight.w500,
                         ),
@@ -104,12 +108,24 @@ class _RegisterPageState extends State<RegisterPage> {
                   margin: EdgeInsets.all(20),
                   child: Column(
                     children: [
-                      TextInput2(hintText: "Fornav", controller: _firstNameController),
-                      TextInput2(hintText: "Efternavn", controller: _lastNameController),
-                      TextInput2(hintText: "Email", controller: _emailController),
-                      TextInput2(hintText: "Adgangskode", controller: _passwordController, obscureText: true),
                       Padding(
-                        padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
+                        padding: const EdgeInsets.symmetric(vertical: 0), // Reduced padding
+                        child: TextInput2(hintText: "Fornav", controller: _firstNameController),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 0), // Reduced padding
+                        child: TextInput2(hintText: "Efternavn", controller: _lastNameController),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 0), // Reduced padding
+                        child: TextInput2(hintText: "Email", controller: _emailController),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 0), // Reduced padding
+                        child: TextInput2(hintText: "Adgangskode", controller: _passwordController, obscureText: true),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(0, 10, 0, 20),
                         child: Button2(
                           text: "Opret profil",
                           onPressed: _signup,
