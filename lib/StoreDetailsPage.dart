@@ -119,6 +119,7 @@ class _StoreDetailsPageState extends State<StoreDetailsPage> {
       });
 
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Store updated successfully')));
+      Navigator.pop(context, true); // Return true to indicate successful update
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error updating store: $e')));
     }
@@ -144,6 +145,16 @@ class _StoreDetailsPageState extends State<StoreDetailsPage> {
       }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Please select a product image')));
+    }
+  }
+
+  Future<void> _deleteStore() async {
+    try {
+      await FirebaseFirestore.instance.collection('stores').doc(widget.store['id']).delete();
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Store deleted successfully')));
+      Navigator.pop(context, true); // Return true to indicate successful deletion
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error deleting store: $e')));
     }
   }
 
@@ -298,6 +309,16 @@ class _StoreDetailsPageState extends State<StoreDetailsPage> {
                   backgroundColor: Colors.yellow,
                 ),
                 child: Text('Save', style: GoogleFonts.outfit(fontWeight: FontWeight.w800)),
+              ),
+            ),
+            SizedBox(height: 20),
+            Center(
+              child: ElevatedButton(
+                onPressed: _deleteStore,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red,
+                ),
+                child: Text('Delete Store', style: GoogleFonts.outfit(fontWeight: FontWeight.w800, color: Colors.white)),
               ),
             ),
           ],

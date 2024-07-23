@@ -3,7 +3,9 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:geolocator/geolocator.dart';
-import 'MapScreen.dart' as MapPage; // Alias for MapScreen
+import 'MapScreen.dart'; // Import the existing MapScreen
+import 'StoreMapScreen.dart'; // Import the new StoreMapScreen
+import 'MapWidget.dart'; // Import the new MapWidget
 
 class StoreDetailsScreen extends StatefulWidget {
   final Map<String, dynamic> store;
@@ -140,7 +142,7 @@ class _StoreDetailsScreenState extends State<StoreDetailsScreen> {
                         style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        entry.value.join(', '),
+                        entry.value.join(' - '),
                         style: TextStyle(fontSize: 16),
                       ),
                     ],
@@ -177,7 +179,7 @@ class _StoreDetailsScreenState extends State<StoreDetailsScreen> {
                 spacing: 16.0,
                 runSpacing: 16.0,
                 children: (store['products'] as List<dynamic>).map((product) {
-                  return buildProductCard(product['name'], product['price'], product['image']);
+                  return buildProductCard(product['name'], '${product['price']} DKK', product['image']);
                 }).toList(),
               ),
               SizedBox(height: 16),
@@ -185,11 +187,29 @@ class _StoreDetailsScreenState extends State<StoreDetailsScreen> {
                 borderRadius: BorderRadius.circular(16.0),
                 child: Container(
                   height: 200,
-                  child: MapPage.MapScreen( // Use alias MapPage
+                  child: MapWidget(
                     stores: [
                       {'latitude': store['latitude'], 'longitude': store['longitude']},
                     ],
                   ),
+                ),
+              ),
+              SizedBox(height: 16),
+              Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => StoreMapScreen(
+                          stores: [
+                            {'latitude': store['latitude'], 'longitude': store['longitude']},
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                  child: Text('Open Full Screen Map'),
                 ),
               ),
             ],

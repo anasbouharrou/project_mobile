@@ -122,7 +122,24 @@ class _SettingsPageState extends State<SettingsPage> {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => AddStorePage()),
-    );
+    ).then((_) {
+      // Refresh the stores list after adding a new store
+      _fetchUserStores();
+    });
+  }
+
+  void _navigateToStoreDetailsPage(Map<String, dynamic> store) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => StoreDetailsPage(store: store),
+      ),
+    ).then((result) {
+      if (result == true) {
+        // Refresh the stores list if the result indicates a change
+        _fetchUserStores();
+      }
+    });
   }
 
   @override
@@ -267,14 +284,7 @@ class _SettingsPageState extends State<SettingsPage> {
                               subtitle: Text(store['distance'] ?? 'Unknown'),
                               trailing: IconButton(
                                 icon: Icon(Icons.edit),
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => StoreDetailsPage(store: store),
-                                    ),
-                                  );
-                                },
+                                onPressed: () => _navigateToStoreDetailsPage(store),
                               ),
                             ),
                           );

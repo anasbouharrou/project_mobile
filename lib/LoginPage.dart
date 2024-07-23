@@ -5,7 +5,7 @@ import 'TextInput2.dart';
 import 'Button2.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'SettingsPage.dart';
-import 'HomePage.dart'; // Import HomePage for navigation
+import 'SellerPage.dart'; // Import SellerPage for navigation
 
 class LoginPage extends StatefulWidget {
   @override
@@ -54,7 +54,7 @@ class _LoginPageState extends State<LoginPage> {
                         onPressed: () {
                           Navigator.pushReplacement(
                             context,
-                            MaterialPageRoute(builder: (context) => HomePage()), // Navigate to HomePage
+                            MaterialPageRoute(builder: (context) => SellerPage()), // Navigate to SellerPage
                           );
                         },
                       ),

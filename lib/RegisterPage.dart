@@ -2,16 +2,15 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:project_mobile/TextInput.dart';
-import 'HomePage.dart';
+import 'TextInput.dart';
 import 'Roundedbutton2.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'TextInput2.dart';
 import 'Button2.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'LoginPage.dart'; // Import LoginPage for navigation
-
+import 'SellerPage.dart'; // Import SellerPage for navigation
+import 'LoginPage.dart';
 class RegisterPage extends StatefulWidget {
   @override
   _RegisterPageState createState() => _RegisterPageState();
@@ -71,7 +70,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         onPressed: () {
                           Navigator.pushReplacement(
                             context,
-                            MaterialPageRoute(builder: (context) => HomePage()), // Navigate to HomePage
+                            MaterialPageRoute(builder: (context) => SellerPage()), // Navigate to SellerPage
                           );
                         },
                       ),
