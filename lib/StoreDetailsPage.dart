@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:geocoding/geocoding.dart'; // Import the geocoding package
 import 'dart:io';
 
 import 'TextInput3.dart'; // Import the TextInput3 widget
@@ -91,11 +92,31 @@ class _StoreDetailsPageState extends State<StoreDetailsPage> {
     return await snapshot.ref.getDownloadURL();
   }
 
+  Future<void> _getCoordinatesFromAddress() async {
+    try {
+      List<Location> locations = await locationFromAddress(_addressController.text);
+      if (locations.isNotEmpty) {
+        Location location = locations.first;
+        double latitude = location.latitude;
+        double longitude = location.longitude;
+        // Use the coordinates as needed
+        print('Coordinates: ($latitude, $longitude)');
+      } else {
+        print('No coordinates found for the address.');
+      }
+    } catch (e) {
+      print('Error getting coordinates: $e');
+    }
+  }
+
   Future<void> _updateStore() async {
     try {
       if (_storeImage != null) {
         _storeImageUrl = await _uploadImage(_storeImage!);
       }
+
+      // Get coordinates from the address
+      await _getCoordinatesFromAddress();
 
       Map<String, List<String>> updatedOpeningHours = {};
       _openingHourControllers.forEach((day, openController) {

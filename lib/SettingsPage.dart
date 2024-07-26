@@ -24,7 +24,7 @@ class _SettingsPageState extends State<SettingsPage> {
     super.initState();
     _fetchUserLocationAndStores();
   }
-
+  
   Future<void> _fetchUserLocationAndStores() async {
     await _getUserLocation();
     await _fetchUserStores();
