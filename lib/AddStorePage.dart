@@ -30,6 +30,15 @@ class _AddStorePageState extends State<AddStorePage> {
     'Saturday': TextEditingController(),
     'Sunday': TextEditingController(),
   };
+  final Map<String, TextEditingController> _closingHourControllers = {
+    'Monday': TextEditingController(),
+    'Tuesday': TextEditingController(),
+    'Wednesday': TextEditingController(),
+    'Thursday': TextEditingController(),
+    'Friday': TextEditingController(),
+    'Saturday': TextEditingController(),
+    'Sunday': TextEditingController(),
+  };
 
   final TextEditingController _productNameController = TextEditingController();
   final TextEditingController _productPriceController = TextEditingController();
@@ -54,6 +63,7 @@ class _AddStorePageState extends State<AddStorePage> {
     _productNameController.dispose();
     _productPriceController.dispose();
     _openingHourControllers.forEach((key, controller) => controller.dispose());
+    _closingHourControllers.forEach((key, controller) => controller.dispose());
     super.dispose();
   }
 
@@ -90,7 +100,7 @@ class _AddStorePageState extends State<AddStorePage> {
         setState(() {
           _products.add({
             'name': _productNameController.text,
-            'price': double.parse(_productPriceController.text),
+            'price': int.parse(_productPriceController.text), // Store price as integer
             'image': imageUrl,
           });
           _productNameController.clear();
@@ -127,8 +137,13 @@ class _AddStorePageState extends State<AddStorePage> {
 
     User? user = FirebaseAuth.instance.currentUser;
     if (user != null) {
-      final openingHours = _openingHourControllers.map((key, controller) {
-        return MapEntry(key, controller.text.split(','));
+      Map<String, List<String>> openingHours = {};
+      _openingHourControllers.forEach((day, openController) {
+        var closeController = _closingHourControllers[day];
+        openingHours[day] = [
+          openController.text.trim(),
+          closeController?.text.trim() ?? ''
+        ];
       });
 
       try {
@@ -278,7 +293,7 @@ class _AddStorePageState extends State<AddStorePage> {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 10),
               child: Text(
-                'Opening Hours (comma separated for each day)',
+                'Opening Hours',
                 style: GoogleFonts.outfit(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
@@ -286,9 +301,27 @@ class _AddStorePageState extends State<AddStorePage> {
               ),
             ),
             ..._openingHourControllers.keys.map((day) {
-              return TextInput3(
-                hintText: '$day Opening Hours',
-                controller: _openingHourControllers[day]!,
+              return Row(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: Text(day, style: GoogleFonts.outfit(fontWeight: FontWeight.w800)),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: TextInput3(
+                      hintText: '$day Opening Time',
+                      controller: _openingHourControllers[day]!,
+                    ),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: TextInput3(
+                      hintText: '$day Closing Time',
+                      controller: _closingHourControllers[day]!,
+                    ),
+                  ),
+                ],
               );
             }).toList(),
             SizedBox(height: 20),
@@ -351,7 +384,7 @@ class _AddStorePageState extends State<AddStorePage> {
                   ),
                   ..._products.map((product) => ListTile(
                         title: Text(product['name']),
-                        subtitle: Text('Price: \$${product['price']}'),
+                        subtitle: Text('Price: ${product['price']} DKK'), // Display price in DKK without decimals
                         trailing: product['image'] != null
                             ? Image.network(product['image'], width: 50, height: 50)
                             : null,

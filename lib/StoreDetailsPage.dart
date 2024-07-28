@@ -153,7 +153,7 @@ class _StoreDetailsPageState extends State<StoreDetailsPage> {
         setState(() {
           _products.add({
             'name': _productNameController.text,
-            'price': double.parse(_productPriceController.text),
+            'price': int.parse(_productPriceController.text), // Store price as integer
             'image': imageUrl,
           });
           _productNameController.clear();
@@ -315,7 +315,7 @@ class _StoreDetailsPageState extends State<StoreDetailsPage> {
                   ),
                   ..._products.map((product) => ListTile(
                         title: Text(product['name']),
-                        subtitle: Text('Price: \$${product['price']}'),
+                        subtitle: Text('Price: ${product['price']} DKK'), // Display price in DKK
                         trailing: product['image'] != null
                             ? Image.network(product['image'], width: 50, height: 50)
                             : null,

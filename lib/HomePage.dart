@@ -3,7 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'LoginPage.dart';
 import 'RegisterPage.dart';
 import 'MainWidget.dart';
-import 'SellerPage.dart'; // Import the new SellerPage
+import 'SellerPage.dart'; // Import the SellerPage
+import 'AdminPanelPage.dart'; // Import the AdminPanelPage
 
 class HomePage extends StatelessWidget {
   @override
@@ -66,6 +67,30 @@ class HomePage extends StatelessWidget {
                   fontSize: 18,
                   fontWeight: FontWeight.w600,
                   color: Colors.black,
+                ),
+              ),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AdminPanelPage()),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue,
+                padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
+              ),
+              child: Text(
+                'Admin Panel',
+                style: GoogleFonts.outfit(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
                 ),
               ),
             ),
