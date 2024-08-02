@@ -24,6 +24,20 @@ class _MainWidgetState extends State<MainWidget> {
   bool _isLoadingStores = true;
   TextEditingController _searchController = TextEditingController();
 
+  List<String> categories = [
+    "ALLE",
+    "FRUGT",
+    "GRUNT",
+    "Bær & Nødder",
+    "Svampe",
+    "Krydderurter",
+    "Blomster",
+    "Planter",
+    "Frø",
+    "Hjemmelavet",
+    "Drikkevarer"
+  ];
+
   @override
   void initState() {
     super.initState();
@@ -45,7 +59,6 @@ class _MainWidgetState extends State<MainWidget> {
         allStores = snapshot.docs.map((doc) {
           final data = doc.data() as Map<String, dynamic>;
 
-          // Assuming openingHours is a Map<String, List<String>>
           final openingHours = <String, List<String>>{};
           if (data['openingHours'] != null) {
             (data['openingHours'] as Map<String, dynamic>).forEach((key, value) {
@@ -238,46 +251,31 @@ class _MainWidgetState extends State<MainWidget> {
                                 ),
                                 Padding(
                                   padding: EdgeInsets.fromLTRB(0, 20, 0, 10),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      MainCard(
-                                        iconLink: "assets/ig1.png",
-                                        selectedIconLink: "assets/ii1.png",
-                                        text: "ALLE",
-                                        isSelected: selectedCard == "ALLE",
-                                        onTap: () {
-                                          setState(() {
-                                            selectedCategory = "ALLE";
-                                            selectedCard = "ALLE";
-                                          });
-                                        },
+                                  child: Container(
+                                    height: 180, // Adjust the height to fit the cards properly
+                                    child: SingleChildScrollView(
+                                      scrollDirection: Axis.horizontal,
+                                      padding: EdgeInsets.symmetric(horizontal: 10),
+                                      child: Row(
+                                        children: categories.map((category) {
+                                          return Padding(
+                                            padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+                                            child: MainCard(
+                                              iconLink: "assets/ig1.png", // Update the icons based on your assets
+                                              selectedIconLink: "assets/ii1.png",
+                                              text: category,
+                                              isSelected: selectedCard == category,
+                                              onTap: () {
+                                                setState(() {
+                                                  selectedCategory = category;
+                                                  selectedCard = category;
+                                                });
+                                              },
+                                            ),
+                                          );
+                                        }).toList(),
                                       ),
-                                      MainCard(
-                                        iconLink: "assets/ig2.png",
-                                        selectedIconLink: "assets/ii2.png",
-                                        text: "FRUGT",
-                                        isSelected: selectedCard == "FRUGT",
-                                        onTap: () {
-                                          setState(() {
-                                            selectedCategory = "FRUGT";
-                                            selectedCard = "FRUGT";
-                                          });
-                                        },
-                                      ),
-                                      MainCard(
-                                        iconLink: "assets/ig3.png",
-                                        selectedIconLink: "assets/ii3.png",
-                                        text: "GRUNT",
-                                        isSelected: selectedCard == "GRUNT",
-                                        onTap: () {
-                                          setState(() {
-                                            selectedCategory = "GRUNT";
-                                            selectedCard = "GRUNT";
-                                          });
-                                        },
-                                      ),
-                                    ],
+                                    ),
                                   ),
                                 ),
                                 Container(
@@ -288,7 +286,7 @@ class _MainWidgetState extends State<MainWidget> {
                                         Container(
                                           margin: EdgeInsets.fromLTRB(12, 0, 0, 0),
                                           child: Text(
-                                            selectedCategory == "FRUGT" ? "Frugt" : "Grunt",
+                                            selectedCategory,
                                             style: GoogleFonts.outfit(
                                               fontSize: 18, // Fixed font size for both
                                               fontStyle: FontStyle.normal,
@@ -298,7 +296,7 @@ class _MainWidgetState extends State<MainWidget> {
                                         ),
                                         Container(
                                           margin: const EdgeInsets.symmetric(vertical: 10),
-                                          height: MediaQuery.of(context).size.height * 0.18 + 70,
+                                          height: MediaQuery.of(context).size.height * 0.18 + 100,
                                           child: ListView(
                                             scrollDirection: Axis.horizontal,
                                             children: getFilteredStores(userPosition, selectedCategory).map((store) => GardenCardWidget(
@@ -318,62 +316,36 @@ class _MainWidgetState extends State<MainWidget> {
                                         ),
                                       ],
                                       if (selectedCategory == "ALLE") ...[
-                                        Text(
-                                          "Frugt",
-                                          style: GoogleFonts.outfit(
-                                            fontSize: 18, // Fixed font size for both
-                                            fontStyle: FontStyle.normal,
-                                            fontWeight: FontWeight.bold,
+                                        for (var category in categories.where((cat) => cat != "ALLE")) ...[
+                                          Text(
+                                            category,
+                                            style: GoogleFonts.outfit(
+                                              fontSize: 18, // Fixed font size for both
+                                              fontStyle: FontStyle.normal,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
-                                        ),
-                                        Container(
-                                          margin: const EdgeInsets.symmetric(vertical: 10),
-                                          height: MediaQuery.of(context).size.height * 0.18 + 70,
-                                          child: ListView(
-                                            scrollDirection: Axis.horizontal,
-                                            children: getCategoryStores(userPosition, 'FRUGT').map((store) => GardenCardWidget(
-                                              title: store['title'] ?? 'No Title',
-                                              distance: store['distance'] ?? 'Calculating...',
-                                              imagePath: (store['images'] as List<String>?)?.isNotEmpty == true ? store['images'][0] : 'https://via.placeholder.com/150',
-                                              onTap: () {
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) => StoreDetailsScreen(store: store),
-                                                  ),
-                                                );
-                                              },
-                                            )).toList(),
+                                          Container(
+                                            margin: const EdgeInsets.symmetric(vertical: 10),
+                                            height: MediaQuery.of(context).size.height * 0.18 + 70,
+                                            child: ListView(
+                                              scrollDirection: Axis.horizontal,
+                                              children: getCategoryStores(userPosition, category).map((store) => GardenCardWidget(
+                                                title: store['title'] ?? 'No Title',
+                                                distance: store['distance'] ?? 'Calculating...',
+                                                imagePath: (store['images'] as List<String>?)?.isNotEmpty == true ? store['images'][0] : 'https://via.placeholder.com/150',
+                                                onTap: () {
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) => StoreDetailsScreen(store: store),
+                                                    ),
+                                                  );
+                                                },
+                                              )).toList(),
+                                            ),
                                           ),
-                                        ),
-                                        Text(
-                                          "Grunt",
-                                          style: GoogleFonts.outfit(
-                                            fontSize: 18, // Fixed font size for both
-                                            fontStyle: FontStyle.normal,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        Container(
-                                          margin: const EdgeInsets.symmetric(vertical: 10),
-                                          height: MediaQuery.of(context).size.height * 0.18 + 70,
-                                          child: ListView(
-                                            scrollDirection: Axis.horizontal,
-                                            children: getCategoryStores(userPosition, 'GRUNT').map((store) => GardenCardWidget(
-                                              title: store['title'] ?? 'No Title',
-                                              distance: store['distance'] ?? 'Calculating...',
-                                              imagePath: (store['images'] as List<String>?)?.isNotEmpty == true ? store['images'][0] : 'https://via.placeholder.com/150',
-                                              onTap: () {
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) => StoreDetailsScreen(store: store),
-                                                  ),
-                                                );
-                                              },
-                                            )).toList(),
-                                          ),
-                                        ),
+                                        ],
                                       ],
                                     ],
                                   ),

@@ -22,7 +22,8 @@ class MainCard extends StatelessWidget {
       onTap: onTap,
       child: Container(
         width: MediaQuery.of(context).size.width * 0.25,
-        height: 40 + MediaQuery.of(context).size.height * 0.12,
+        height: 100 + MediaQuery.of(context).size.height * 0.12,
+        margin: EdgeInsets.all(5),
         decoration: BoxDecoration(
           color: isSelected ? Colors.yellow : Colors.white,
           borderRadius: BorderRadius.circular(5),
@@ -47,7 +48,7 @@ class MainCard extends StatelessWidget {
               child: Text(
                 text,
                 style: GoogleFonts.outfit(
-                  fontSize: (MediaQuery.of(context).size.height + MediaQuery.of(context).size.width) * 0.001 + 15,
+                  fontSize: (MediaQuery.of(context).size.height + MediaQuery.of(context).size.width) * 0.001 + 12,
                   fontStyle: FontStyle.normal,
                   fontWeight: FontWeight.w900,
                 ),

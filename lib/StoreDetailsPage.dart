@@ -33,8 +33,20 @@ class _StoreDetailsPageState extends State<StoreDetailsPage> {
   List<Map<String, dynamic>> _products = [];
   List<Map<String, dynamic>> _initialProducts = [];
 
-  String _selectedCategory = 'FRUGT'; // Default category
-  final List<String> _categories = ['FRUGT', 'GRUNT', 'ALLE'];
+  String _selectedCategory = 'ALLE'; // Default category
+  final List<String> _categories = [
+    'ALLE',
+    'FRUGT',
+    'GRUNT',
+    'Bær & Nødder',
+    'Svampe',
+    'Krydderurter',
+    'Blomster',
+    'Planter',
+    'Frø',
+    'Hjemmelavet',
+    'Drikkevarer'
+  ];
 
   @override
   void initState() {
@@ -46,7 +58,7 @@ class _StoreDetailsPageState extends State<StoreDetailsPage> {
     _appointmentController = TextEditingController(text: widget.store['appointment'] ?? '');
     _productNameController = TextEditingController();
     _productPriceController = TextEditingController();
-    _selectedCategory = widget.store['category'] ?? 'FRUGT';
+    _selectedCategory = widget.store['category'] ?? 'ALLE';
 
     if (widget.store['products'] != null) {
       _initialProducts = List<Map<String, dynamic>>.from(widget.store['products']);

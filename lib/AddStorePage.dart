@@ -49,8 +49,20 @@ class _AddStorePageState extends State<AddStorePage> {
   String? _imageUrl;
   List<Map<String, dynamic>> _products = []; // List to store products locally
 
-  String _selectedCategory = 'FRUGT'; // Default category
-  final List<String> _categories = ['FRUGT', 'GRUNT', 'ALLE'];
+  String _selectedCategory = 'ALLE'; // Default category
+  final List<String> _categories = [
+    'ALLE',
+    'FRUGT',
+    'GRUNT',
+    'Bær & Nødder',
+    'Svampe',
+    'Krydderurter',
+    'Blomster',
+    'Planter',
+    'Frø',
+    'Hjemmelavet',
+    'Drikkevarer'
+  ];
 
   @override
   void dispose() {
